@@ -1,0 +1,6 @@
+- insert:
+    - id: deepseek-balance-peak
+      name: '@local/deepseek-balance-peak'
+      config:
+        balanceCacheSeconds: 45
+        extraHolidays: []

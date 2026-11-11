@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Balance and price window",
+    "description": "Shows the DeepSeek balance, this session's spend, and the peak/off-peak countdown in a card above the sidebar account row."
+  }
+}
