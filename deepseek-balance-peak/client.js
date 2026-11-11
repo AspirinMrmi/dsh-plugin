@@ -68,8 +68,8 @@ window.__ModuleLoader__.load({
 .dsh-bpk-v { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--dsw-alias-label-primary); font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
 .dsh-bpk-meta { align-items: center; padding-top: 5px; border-top: 1px solid var(--dsw-alias-border-l1); }
 .dsh-bpk-tier { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; white-space: nowrap; }
-.dsh-bpk-dot { width: 6px; height: 6px; flex: none; border-radius: 50%; background: var(--dsw-alias-state-success-primary); }
-.dsh-bpk-dot.is-peak { background: var(--dsw-alias-state-warn-primary); }
+.dsh-bpk-trend { flex: none; display: block; color: var(--dsw-alias-state-success-primary); }
+.dsh-bpk-trend.is-up { color: var(--dsw-alias-state-error-primary); }
 .dsh-bpk-count { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; color: var(--dsw-alias-label-primary); font-variant-numeric: tabular-nums; }
 .dsh-bpk-card[aria-busy='true'] .dsh-bpk-v { opacity: .6; }
 `.trim()
@@ -276,6 +276,21 @@ window.__ModuleLoader__.load({
       return [state, load]
     }
 
+    /** Stock-market mark: red rising triangle for peak, green falling triangle for off-peak. */
+    function TrendMark({ peak }) {
+      return h('svg', {
+        className: `dsh-bpk-trend${peak ? ' is-up' : ' is-down'}`,
+        viewBox: '0 0 12 12',
+        width: 10,
+        height: 10,
+        'aria-hidden': true,
+        focusable: 'false',
+      }, h('path', {
+        d: peak ? 'M6 1.6 10.7 9.4H1.3Z' : 'M6 10.4 1.3 2.6h9.4Z',
+        fill: 'currentColor',
+      }))
+    }
+
     function BalanceCard(props) {
       const t = useT()
       const snapshot = useLocaleSnapshot()
@@ -358,7 +373,7 @@ window.__ModuleLoader__.load({
           ),
           h('div', { className: 'dsh-bpk-line dsh-bpk-meta' },
             h('span', { className: 'dsh-bpk-tier' },
-              h('i', { className: `dsh-bpk-dot${tier.peak ? ' is-peak' : ''}`, 'aria-hidden': true }),
+              h(TrendMark, { peak: tier.peak }),
               tierText,
             ),
             h('span', { className: 'dsh-bpk-count' }, `${switchLabel} ${countdown}`),
